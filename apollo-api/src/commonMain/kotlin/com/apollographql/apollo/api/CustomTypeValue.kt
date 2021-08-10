@@ -76,6 +76,22 @@ sealed class CustomTypeValue<T>(@JvmField val value: T) {
   }
 
   /**
+   * Represents a JSON Nullable `Object` value
+   */
+  class GraphQLNullableJsonObject(value: Map<String, Any?>) : CustomTypeValue<Map<String, Any?>>(value) {
+    override fun equals(other: Any?): Boolean {
+      if (this === other) return true
+      if (other !is GraphQLNullableJsonObject) return false
+      if (value != other.value) return false
+      return true
+    }
+
+    override fun hashCode(): Int {
+      return value.hashCode()
+    }
+  }
+
+  /**
    * Represents a JSON `List` value
    */
   class GraphQLJsonList(value: List<Any>) : CustomTypeValue<List<Any>>(value) {
