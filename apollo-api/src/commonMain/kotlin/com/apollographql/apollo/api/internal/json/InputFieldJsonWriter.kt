@@ -82,6 +82,7 @@ class InputFieldJsonWriter(
       is GraphQLNumber -> writeNumber(fieldName, customTypeValue.value)
       is GraphQLNull -> writeString(fieldName, null)
       is GraphQLJsonObject -> jsonWriter.name(fieldName).apply { writeToJson(customTypeValue.value, this) }
+      is GraphQLNullableJsonObject -> jsonWriter.name(fieldName).apply { writeToJson(customTypeValue.value, this) }
       is GraphQLJsonList -> jsonWriter.name(fieldName).apply { writeToJson(customTypeValue.value, this) }
     }
   }
@@ -195,6 +196,7 @@ class InputFieldJsonWriter(
         is GraphQLBoolean -> writeBoolean(customTypeValue.value)
         is GraphQLNumber -> writeNumber(customTypeValue.value)
         is GraphQLJsonObject -> writeToJson(customTypeValue.value, jsonWriter)
+        is GraphQLNullableJsonObject -> writeToJson(customTypeValue.value, jsonWriter)
         is GraphQLJsonList -> writeToJson(customTypeValue.value, jsonWriter)
         is GraphQLNull -> writeString(null)
       }
