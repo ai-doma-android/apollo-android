@@ -1,6 +1,12 @@
 package com.apollographql.apollo.api.internal.json
 
-import com.apollographql.apollo.api.CustomTypeValue.*
+import com.apollographql.apollo.api.CustomTypeValue.GraphQLBoolean
+import com.apollographql.apollo.api.CustomTypeValue.GraphQLJsonList
+import com.apollographql.apollo.api.CustomTypeValue.GraphQLJsonObject
+import com.apollographql.apollo.api.CustomTypeValue.GraphQLNull
+import com.apollographql.apollo.api.CustomTypeValue.GraphQLNullableJsonObject
+import com.apollographql.apollo.api.CustomTypeValue.GraphQLNumber
+import com.apollographql.apollo.api.CustomTypeValue.GraphQLString
 import com.apollographql.apollo.api.ScalarType
 import com.apollographql.apollo.api.ScalarTypeAdapters
 import com.apollographql.apollo.api.internal.InputFieldMarshaller
@@ -13,6 +19,9 @@ class InputFieldJsonWriter(
     private val jsonWriter: JsonWriter,
     private val scalarTypeAdapters: ScalarTypeAdapters
 ) : InputFieldWriter {
+  init {
+    jsonWriter.serializeNulls = true
+  }
 
   @Throws(IOException::class)
   override fun writeString(fieldName: String, value: String?) {
@@ -82,7 +91,11 @@ class InputFieldJsonWriter(
       is GraphQLNumber -> writeNumber(fieldName, customTypeValue.value)
       is GraphQLNull -> writeString(fieldName, null)
       is GraphQLJsonObject -> jsonWriter.name(fieldName).apply { writeToJson(customTypeValue.value, this) }
-      is GraphQLNullableJsonObject -> jsonWriter.name(fieldName).apply { writeToJson(customTypeValue.value, this) }
+      is GraphQLNullableJsonObject -> jsonWriter.name(fieldName).apply {
+        //this.serializeNulls = true
+        writeToJson(customTypeValue.value, this)
+        //this.serializeNulls = false
+      }
       is GraphQLJsonList -> jsonWriter.name(fieldName).apply { writeToJson(customTypeValue.value, this) }
     }
   }
@@ -196,7 +209,7 @@ class InputFieldJsonWriter(
         is GraphQLBoolean -> writeBoolean(customTypeValue.value)
         is GraphQLNumber -> writeNumber(customTypeValue.value)
         is GraphQLJsonObject -> writeToJson(customTypeValue.value, jsonWriter)
-        is GraphQLNullableJsonObject -> writeToJson(customTypeValue.value, jsonWriter)
+        is GraphQLNullableJsonObject -> writeToJson(customTypeValue.value, jsonWriter/*.apply { this.serializeNulls = true }*/)/*.also { jsonWriter.serializeNulls = false }*/
         is GraphQLJsonList -> writeToJson(customTypeValue.value, jsonWriter)
         is GraphQLNull -> writeString(null)
       }

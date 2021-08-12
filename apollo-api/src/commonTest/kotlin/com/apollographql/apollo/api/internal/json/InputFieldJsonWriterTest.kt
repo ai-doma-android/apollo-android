@@ -175,6 +175,38 @@ class InputFieldJsonWriterTest {
   }
 
   @Test
+  fun writeCustomNullableJsonObject() {
+    val value = mapOf(
+        "stringField" to "string",
+        "booleanField" to null,
+        "numberField" to 100,
+        "listField" to listOf(
+            "string",
+            true,
+            100,
+            mapOf(
+                "stringField" to "string",
+                "numberField" to 100,
+                "booleanField" to true,
+                "listField" to listOf(1, 2, 3)
+            )
+        ),
+        "objectField" to mapOf(
+            "stringField" to "string",
+            "numberField" to 100,
+            "booleanField" to true,
+            "listField" to listOf(1, 2, 3)
+        )
+    )
+    val scalarType = MockCustomScalarType(Map::class, "kotlin.collections.Map")
+    inputFieldJsonWriter.writeCustom("someField", scalarType, value)
+    inputFieldJsonWriter.writeCustom("someNullField", scalarType, null)
+    val result = jsonBuffer.readUtf8()
+    print(result)
+    assertEquals("{\"someField\":{\"stringField\":\"string\",\"booleanField\":null,\"numberField\":100,\"listField\":[\"string\",true,100,{\"stringField\":\"string\",\"numberField\":100,\"booleanField\":true,\"listField\":[1,2,3]}],\"objectField\":{\"stringField\":\"string\",\"numberField\":100,\"booleanField\":true,\"listField\":[1,2,3]}},\"someNullField\":null", result)
+  }
+
+  @Test
   fun writeCustomList() {
     val value = listOf(
         "string",
@@ -190,6 +222,7 @@ class InputFieldJsonWriterTest {
     val scalarType = MockCustomScalarType(List::class, "kotlin.collections.List")
     inputFieldJsonWriter.writeCustom("someField", scalarType, value)
     inputFieldJsonWriter.writeCustom("someNullField", scalarType, null)
+    print(jsonBuffer.readUtf8())
     assertEquals("{\"someField\":[\"string\",true,100,{\"stringField\":\"string\",\"numberField\":100,\"booleanField\":true,\"listField\":[1,2,3]}],\"someNullField\":null", jsonBuffer.readUtf8())
   }
 

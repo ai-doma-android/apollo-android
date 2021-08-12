@@ -34,6 +34,7 @@ kotlin {
     val commonMain by getting {
       dependencies {
         api(groovy.util.Eval.x(project, "x.dep.okio"))
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
       }
     }
 
@@ -61,6 +62,7 @@ kotlin {
     val jsTest by getting {
       dependencies {
         implementation(kotlin("test-js"))
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
       }
     }
 
@@ -68,6 +70,7 @@ kotlin {
       dependencies {
         implementation(kotlin("test-common"))
         implementation(kotlin("test-annotations-common"))
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
       }
     }
 
@@ -77,6 +80,7 @@ kotlin {
         implementation(kotlin("test-junit"))
         implementation(groovy.util.Eval.x(project, "x.dep.truth"))
         implementation(groovy.util.Eval.x(project, "x.dep.okHttp.okHttp"))
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
       }
     }
   }
