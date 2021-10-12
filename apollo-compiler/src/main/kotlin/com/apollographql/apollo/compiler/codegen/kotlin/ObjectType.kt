@@ -17,7 +17,7 @@ import com.squareup.kotlinpoet.*
 internal fun ObjectType.typeSpec(generateAsInternal: Boolean = false): TypeSpec = when (kind) {
   is ObjectType.Kind.Object -> TypeSpec
       .classBuilder(name)
-      .addAnnotation(Serializable::class)
+      //.addAnnotation(kotlinx.serialization.Serializable::class)
       .applyIf(generateAsInternal) { addModifiers(KModifier.INTERNAL) }
       .addModifiers(KModifier.DATA)
       .apply { if (description.isNotBlank()) addKdoc("%L\n", description) }
@@ -45,7 +45,7 @@ internal fun ObjectType.typeSpec(generateAsInternal: Boolean = false): TypeSpec 
 
   is ObjectType.Kind.InlineFragment -> TypeSpec
       .classBuilder(name)
-      .addAnnotation(Serializable::class)
+      //.addAnnotation(kotlinx.serialization.Serializable::class)
       .addModifiers(KModifier.DATA)
       .apply { if (description.isNotBlank()) addKdoc("%L\n", description) }
       .primaryConstructor(primaryConstructorSpec)
@@ -63,7 +63,7 @@ internal fun ObjectType.typeSpec(generateAsInternal: Boolean = false): TypeSpec 
 
   is ObjectType.Kind.Fragment -> TypeSpec
       .classBuilder(name)
-      .addAnnotation(Serializable::class)
+      //.addAnnotation(kotlinx.serialization.Serializable::class)
       .applyIf(generateAsInternal) { addModifiers(KModifier.INTERNAL) }
       .addModifiers(KModifier.DATA)
       .apply { if (description.isNotBlank()) addKdoc("%L\n", description) }
@@ -91,7 +91,7 @@ internal fun ObjectType.typeSpec(generateAsInternal: Boolean = false): TypeSpec 
 internal fun ObjectType.fragmentsTypeSpec(generateAsInternal: Boolean = false): TypeSpec {
   return TypeSpec
       .classBuilder(name)
-      .addAnnotation(Serializable::class)
+      //.addAnnotation(kotlinx.serialization.Serializable::class)
       .applyIf(generateAsInternal) { addModifiers(KModifier.INTERNAL) }
       .addModifiers(KModifier.DATA)
       .primaryConstructor(primaryConstructorSpec)

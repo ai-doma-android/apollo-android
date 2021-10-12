@@ -16,7 +16,7 @@ dependencies {
   add("implementation", project(":apollo-api"))
 
   add("kapt", groovy.util.Eval.x(project, "x.dep.moshi.kotlinCodegen"))
-
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
   add("testImplementation", groovy.util.Eval.x(project, "x.dep.compiletesting"))
   add("testImplementation", groovy.util.Eval.x(project, "x.dep.kotlinCompileTesting"))

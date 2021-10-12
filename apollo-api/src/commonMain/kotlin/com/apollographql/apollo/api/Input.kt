@@ -1,5 +1,7 @@
 package com.apollographql.apollo.api
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmField
 import kotlin.jvm.JvmStatic
 

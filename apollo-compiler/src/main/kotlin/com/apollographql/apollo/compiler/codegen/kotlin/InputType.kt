@@ -16,7 +16,6 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 internal fun InputType.typeSpec(generateAsInternal: Boolean = false) =
     TypeSpec
         .classBuilder(name)
-        .addAnnotation(Serializable::class)
         .applyIf(description.isNotBlank()) { addKdoc("%L\n", description) }
         .applyIf(generateAsInternal) { addModifiers(KModifier.INTERNAL) }
         .addAnnotation(suppressWarningsAnnotation)

@@ -1,6 +1,7 @@
 plugins {
   `java-library`
   kotlin("multiplatform")
+  kotlin("plugin.serialization") version "1.5.21"
 }
 
 kotlin {
