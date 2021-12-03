@@ -207,7 +207,7 @@ fun Project.configurePublishing() {
 
       maven {
         name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/d-w-s-h/apollo-android")
+        url = uri("https://maven.pkg.github.com/ai-doma-android/apollo-android")
         credentials {
           username = findProperty("GITHUB_USER") as String
           password = findProperty("GITHUB_TOKEN") as String
