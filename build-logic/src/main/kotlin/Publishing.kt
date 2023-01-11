@@ -14,6 +14,8 @@ import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import com.android.build.api.dsl.LibraryExtension
+import java.io.FileInputStream
+import java.util.Properties
 
 fun Project.configurePublishing() {
   if (
@@ -212,33 +214,43 @@ private fun Project.configurePublishingInternal() {
       }
 
       maven {
-        name = "ossSnapshots"
-        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/d-w-s-h/apollo-android")
         credentials {
-          username = System.getenv("SONATYPE_NEXUS_USERNAME")
-          password = System.getenv("SONATYPE_NEXUS_PASSWORD")
+          username = githubProperties().getProperty("gpr.usr") as String
+          password = githubProperties().getProperty("gpr.key") as String
         }
       }
 
-      maven {
-        name = "ossStaging"
-        setUrl {
-          uri(rootProject.getOssStagingUrl())
-        }
-        credentials {
-          username = System.getenv("SONATYPE_NEXUS_USERNAME")
-          password = System.getenv("SONATYPE_NEXUS_PASSWORD")
-        }
-      }
 
-      maven {
-        name = "repsy"
-        setUrl("https://repo.repsy.io/mvn/mbonnin/default")
-        credentials {
-          username = System.getenv("REPSY_USERNAME")
-          password = System.getenv("REPSY_PASSWORD")
-        }
-      }
+//      maven {
+//        name = "ossSnapshots"
+//        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+//        credentials {
+//          username = System.getenv("SONATYPE_NEXUS_USERNAME")
+//          password = System.getenv("SONATYPE_NEXUS_PASSWORD")
+//        }
+//      }
+//
+//      maven {
+//        name = "ossStaging"
+//        setUrl {
+//          uri(rootProject.getOssStagingUrl())
+//        }
+//        credentials {
+//          username = System.getenv("SONATYPE_NEXUS_USERNAME")
+//          password = System.getenv("SONATYPE_NEXUS_PASSWORD")
+//        }
+//      }
+//
+//      maven {
+//        name = "repsy"
+//        setUrl("https://repo.repsy.io/mvn/mbonnin/default")
+//        credentials {
+//          username = System.getenv("REPSY_USERNAME")
+//          password = System.getenv("REPSY_PASSWORD")
+//        }
+//      }
     }
   }
 
@@ -315,4 +327,8 @@ private fun Project.createAndroidSourcesTask(): TaskProvider<Jar> {
     from(android.sourceSets.getByName("main").java.getSourceFiles())
     archiveClassifier.set("sources")
   }
+}
+
+private fun Project.githubProperties() =  Properties().apply {
+  load(FileInputStream(rootProject.file("github.properties")))
 }
